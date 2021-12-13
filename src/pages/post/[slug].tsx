@@ -8,7 +8,6 @@ import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
 import { ptBR } from 'date-fns/locale';
 import { useRouter } from 'next/router';
 import Prismic from '@prismicio/client';
-import Cookies from 'js-cookie';
 import Link from 'next/link';
 import Header from '../../components/Header';
 
@@ -85,17 +84,6 @@ export default function Post({
   const isPostEdited =
     post.first_publication_date !== post.last_publication_date;
 
-  let editionDate;
-  if (isPostEdited) {
-    editionDate = format(
-      new Date(post.last_publication_date),
-      "'* editado em' dd MMM yyyy', às' H':'m",
-      {
-        locale: ptBR,
-      }
-    );
-  }
-
   return (
     <>
       <Header />
@@ -118,7 +106,7 @@ export default function Post({
                 {`${readTime} min`}
               </li>
             </ul>
-            <span>{isPostEdited && editionDate}</span>
+            <span>{isPostEdited && post.last_publication_date}</span>
           </div>
 
           {post.data.content.map(content => {
@@ -218,6 +206,19 @@ export const getStaticProps: GetStaticProps = async ({
       orderings: '[document.last_publication_date desc]',
     }
   );
+
+  // const first_publication_date = format(
+  //   new Date(response.first_publication_date),
+  //   'dd MMM yyyy',
+  //   {
+  //     locale: ptBR,
+  //   }
+  // );
+  // const last_publication_date = response.last_publication_date
+  //   ? format(new Date(response.last_publication_date), 'dd MMM yyyy', {
+  //       locale: ptBR,
+  //     })
+  //   : first_publication_date;
 
   const post = {
     uid: response.uid,

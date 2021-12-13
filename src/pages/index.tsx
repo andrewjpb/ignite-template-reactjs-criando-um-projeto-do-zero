@@ -77,7 +77,7 @@ export default function Home({
         data: {
           title: post.data.title,
           subtitle: post.data.subtitle,
-          author: post.data.author,
+          author1: post.data.author1,
         },
       };
     });
